@@ -89,7 +89,7 @@ function sendInvoices($invoices) {
     $i->paid_at = $invoice->datepaid;
     $i->customer_email = $client->email;
     $i->customer_contact_name = $client->lastname . ' ' . $client->firstname;
-
+    $i->customer_country = $client->country; 
     $rows = array();
     $price = 0;
     
