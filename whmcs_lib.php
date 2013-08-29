@@ -178,7 +178,8 @@ function sendInvoice($id) {
 
 function checkCompanyName($name) {
   // A rövidítések előtt szándékosan van SPACE!
-  $companyFormats = array(' kft', ' bt', ' zrt', ' nyrt', ' ev', ' e.v.', 'egyesület', 'mozgalom', 'Önkormányzat', 'iskola', ' khe', 'intézet', 'Ügyvédi Iroda', 'szövetség', 'alapítvány', 'Óvoda', 'ügyvéd', 'szakszervezet', 'szövetkezet', 'Football Club', 'egyéni vállalkozó', 'plébánia', 'civil szervezet', 'klebelsberg', 'alapítvány', 'polgárőrség', 'közösség', "kamara", "református", "klub", "club", "gyülekezet", "konzulátus", "társaság", " ec", "egyéni cég", "szolgáltató központ", " kkt", "közkereseti társaság", "ifjúsági otthon", " kik", " se.", "polgármesteri hivatal", "egyetem", " kha", "kereskedelmi képviselet", "gimnázium", "kollégium", "Lelkigyakorlatos Ház");
+  $companyFormats = array(' kft', ' bt', ' zrt', ' nyrt', ' ev', ' e.v.', 'egyesület', 'mozgalom', 'Önkormányzat', 'iskola', ' khe', 'intézet', 'Ügyvédi Iroda', 'szövetség', 'alapítvány', 'Óvoda', 'ügyvéd', 'szakszervezet', 'szövetkezet', 'Football Club', 'egyéni vállalkozó', 'plébánia', 'civil szervezet', 'klebelsberg', 'alapítvány', 'polgárőrség', 'közösség', "kamara", "református", "klub", "club", "gyülekezet", "konzulátus", "társaság", " ec", "egyéni cég", "szolgáltató központ", " kkt", "közkereseti társaság", "ifjúsági otthon", " kik", " se.", "polgármesteri hivatal", "egyetem", " kha", "kereskedelmi képviselet", "gimnázium", "kollégium", "Lelkigyakorlatos Ház", "Nemzetőrség", "csapat", "felügyelőség", "oktatási központ", "színház");
+  
   for ($i = 0; $i<count($companyFormats); $i++) {
     if (stripos($name, $companyFormats[$i]) !== false) {
       return true;
