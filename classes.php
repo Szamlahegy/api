@@ -21,7 +21,7 @@ class Invoice {
   public $header;             // Számla felső részén szabad szöveges rész
   public $footer;             // Számla alsó részén szabad szöveges rész
   public $customer_zip;       // Vevő irányítószáma
-  public $kind;               // Számla típusa (N: normal, S: sztorno (sztornó nem használatos egyelőre))
+  public $kind;               // Számla típusa (N: normal, S: sztorno, D: díjbekérő, T: Teszt)
   public $tag;                // Tetszőleges szöveges mező, keresni lehet rá a felületn
   public $paid_at;            // Fizetés dátuma (ha ki van töltve, akkor a számlán megjelenik a 'Fizetve' felirat)
   public $customer_email;     // Vevő mail címe, ahova az elektronikus számlát küldeni kell
