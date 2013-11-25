@@ -9,10 +9,10 @@
 
 require_once('classes.php');
 
-if (DEBUG) {
-  define('SERVER_URL', DEBUG);
-} else {
+if (!defined('DEBUG')) {
   define('SERVER_URL', 'http://ugyfel.szamlahegy.hu/api/create');
+} else {
+  define('SERVER_URL', DEBUG);
 }
 
 class SzamlahegyApi {
