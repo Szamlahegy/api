@@ -1,6 +1,6 @@
 <?php
 
-require_once('config.php');
+require_once('whmcs_config.php');
 
 $mysqli = new mysqli(MYSQL_HOSTNAME, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE);
 if ($mysqli->connect_errno) {
