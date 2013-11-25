@@ -11,7 +11,6 @@ require_once('classes.php');
 
 define('SERVER_URL', 'http://ugyfel.szamlahegy.hu/api/create');
 #define('SERVER_URL', 'http://localhost:3000/api/create');
-define('API_KEY', 'aaaaa-bbbbb-ccccc-ddddd');
 
 class SzamlahegyApi {
   private $ch; 
