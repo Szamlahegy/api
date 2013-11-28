@@ -12,7 +12,7 @@ require_once('classes.php');
 if (!defined('DEBUG')) {
   define('SERVER_URL', 'http://ugyfel.szamlahegy.hu/api/create');
 } else {
-  define('SERVER_URL', DEBUG);
+  define('SERVER_URL', DEBUG . '/api/create');
 }
 
 class SzamlahegyApi {
