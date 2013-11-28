@@ -15,7 +15,6 @@ class Invoice {
   public $customer_country;   // Vevő országa (pl.: HU)
   public $customer_vatnr;     // Vevő adószáma (Ha az ország HU akkor a formátum ellenőrzött)
   public $payment_method;     // Fizetés módja (B: utalás, C: készpénz)
-  public $invoice_date;       // Számla kiállításának dátuma (nem használt)
   public $payment_date;       // Fizetésu határidő
   public $perform_date;       // Teljesítési dátum
   public $header;             // Számla felső részén szabad szöveges rész
