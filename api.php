@@ -57,21 +57,18 @@ class SzamlahegyApi {
     $atmp = array();
     $atmp['api_key'] = API_KEY;
     $atmp['invoice'] = $invoice;
-
+    
     curl_setopt($this->ch,CURLOPT_POSTFIELDS,json_encode($atmp));
 
     //execute post
     $result = curl_exec($this->ch);
     $info = curl_getinfo($this->ch);
-
-    if($result === false || is_null($result) || $result === "" || $info['http_code'] != 201) {
-        echo 'HTTP response code: ' . $info['http_code'] . "\n";
-        echo $result . "\n";
-        echo 'Curl error: ' . curl_error($this->ch) . "\n";
-        return false;
-    }
-    else {
-        return true;
-    }
+    
+    $response = array();
+    $response['result'] = $result;
+    $response['info'] = $info;
+    $response['error'] = curl_error($this->ch);
+    
+    return $response;
   }
 }
