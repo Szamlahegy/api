@@ -12,22 +12,22 @@ require_once('classes.php');
 if (!defined('DEBUG')) {
   define('SERVER_URL', 'http://ugyfel.szamlahegy.hu/api/create');
 } else {
-  define('SERVER_URL', DEBUG . '/api/create');
+  define('SERVER_URL', DEBUG . '/api/v1/invoices');
 }
 
 class SzamlahegyApi {
-  private $ch; 
-  
+  private $ch;
+
   /**
-   * opens a HTTP connection to Szamlahegy server. 
+   * opens a HTTP connection to Szamlahegy server.
    * All commands send with one conection for performance reason
-   * 
+   *
    * @return void
    * @author Péter Képes
    **/
   function openHTTPConnection() {
     // Init connection
-    $this->ch = curl_init();  
+    $this->ch = curl_init();
     curl_setopt($this->ch,CURLOPT_URL,SERVER_URL);
     curl_setopt($this->ch,CURLOPT_POST,true);
     curl_setopt($this->ch,CURLOPT_RETURNTRANSFER,true);
@@ -36,7 +36,7 @@ class SzamlahegyApi {
 
   /**
    * closes oened HTTP connection
-   * 
+   *
    * @return void
    * @author Péter Képes
    **/
@@ -44,11 +44,11 @@ class SzamlahegyApi {
     //close connection
     curl_close($this->ch);
   }
-  
+
   /**
-   * send new invoice to szamlahegy 
+   * send new invoice to szamlahegy
    * All commands send with one conection for performance reason
-   * 
+   *
    * invoice object from classes.php
    * @return true if sucesed false if something bad happend
    * @author Péter Képes
@@ -57,18 +57,18 @@ class SzamlahegyApi {
     $atmp = array();
     $atmp['api_key'] = API_KEY;
     $atmp['invoice'] = $invoice;
-    
+
     curl_setopt($this->ch,CURLOPT_POSTFIELDS,json_encode($atmp));
 
     //execute post
     $result = curl_exec($this->ch);
     $info = curl_getinfo($this->ch);
-    
+
     $response = array();
     $response['result'] = $result;
     $response['info'] = $info;
     $response['error'] = curl_error($this->ch);
-    
+
     return $response;
   }
 }
