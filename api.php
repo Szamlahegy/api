@@ -10,7 +10,7 @@
 require_once('classes.php');
 
 if (!defined('DEBUG')) {
-  define('SERVER_URL', 'http://ugyfel.szamlahegy.hu/api/create');
+  define('SERVER_URL', 'https://ugyfel.szamlahegy.hu/api/v1/invoices');
 } else {
   define('SERVER_URL', DEBUG . '/api/v1/invoices');
 }
