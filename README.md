@@ -6,7 +6,7 @@ létrehozhatók számlák bármely PHP programból. (A számla készítéshez Sz
 ## Funkciók
 
 * Hiteles elektronikius számla létrehozása
-* Elektronikus számla küldése e-mail-ben
+* [Elektronikus számla](https://szamlahegy.hu) küldése e-mail-ben
 * Nyomtatott számla készítése
 * Díjbekérő készítése
 * Teszt üzemmód, teszt számlák készítése
