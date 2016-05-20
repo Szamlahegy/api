@@ -17,6 +17,7 @@ if (!defined('DEBUG')) {
 
 class SzamlahegyApi {
   private $ch;
+  private $server_url;
 
   /**
    * opens a HTTP connection to Szamlahegy server.
@@ -25,10 +26,11 @@ class SzamlahegyApi {
    * @return void
    * @author Péter Képes
    **/
-  function openHTTPConnection() {
+  function openHTTPConnection($server_url = SERVER_URL) {
     // Init connection
     $this->ch = curl_init();
-    curl_setopt($this->ch,CURLOPT_URL,SERVER_URL);
+    $this->server_url = $server_url;
+    curl_setopt($this->ch,CURLOPT_URL,$this->server_url);
     curl_setopt($this->ch,CURLOPT_POST,true);
     curl_setopt($this->ch,CURLOPT_RETURNTRANSFER,true);
     curl_setopt($this->ch,CURLOPT_HTTPHEADER,array('Content-Type: application/json','Accept: application/json'));
@@ -53,9 +55,9 @@ class SzamlahegyApi {
    * @return true if sucesed false if something bad happend
    * @author Péter Képes
    **/
-  function sendNewInvoice($invoice) {
+  function sendNewInvoice($invoice, $api_key = API_KEY) {
     $atmp = array();
-    $atmp['api_key'] = API_KEY;
+    $atmp['api_key'] = $api_key;
     $atmp['invoice'] = $invoice;
 
     curl_setopt($this->ch,CURLOPT_POSTFIELDS,json_encode($atmp));
@@ -66,8 +68,38 @@ class SzamlahegyApi {
 
     $response = array();
     $response['result'] = $result;
-    $response['info'] = $info;
-    $response['error'] = curl_error($this->ch);
+    $response['curl_info'] = $info;
+    $response['curl_error'] = curl_error($this->ch);
+
+    $error_text = "Hiba a számla generálása közben! #" . $invoice->foreign_id . "\n";
+
+    if ($response['result'] === false) {
+      $response['error'] = true;
+      $response['error_code'] = 101;
+      $response['error_text'] = $error_text . "Curl error: " .
+        $response['curl_error'] . "\n" .
+        "Server url: " . $this->server_url  . "\n";
+
+    } elseif (is_null($response['result']) ||
+            $response['result'] === "" ||
+            $response['curl_info']['http_code'] != 201) {
+      $response['error'] = true;
+
+      if ( $response['result'] == '{"foreign_id":["must be unique for issuer"]}') {
+        $response['error_code'] = 103;
+        $response['error_text'] = $error_text .
+          "A számlát nem küldjük újra, mert már szerepel a Számlahegyen!";
+      } else {
+        $response['error_code'] = 102;
+        $response['error_text'] = $error_text .
+          "Server url: " . $this->server_url  . "\n" .
+          "HTTP response code: " . $response['curl_info']['http_code'] . "\n" .
+          $response['result'] . "\n";
+      }
+    } else {
+      $response['error'] = false;
+      $response['error_code'] = null;
+    }
 
     return $response;
   }
