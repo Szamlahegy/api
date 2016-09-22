@@ -10,9 +10,9 @@
 require_once('classes.php');
 
 if (!defined('DEBUG')) {
-  define('SERVER_URL', 'https://ugyfel.szamlahegy.hu/api/v1/invoices');
+  define('SERVER_URL', 'https://ugyfel.szamlahegy.hu');
 } else {
-  define('SERVER_URL', DEBUG . '/api/v1/invoices');
+  define('SERVER_URL', DEBUG);
 }
 
 class SzamlahegyApi {
@@ -26,11 +26,17 @@ class SzamlahegyApi {
    * @return void
    * @author Péter Képes
    **/
-  function openHTTPConnection($server_url = SERVER_URL) {
+  function openHTTPConnection($function = 'send_invoice', $server_url = SERVER_URL) {
+    if ($function == 'import_products') {
+      $uri = '/api/v1/products';
+    } else {
+      $uri = '/api/v1/invoices';
+    }
+
     // Init connection
     $this->ch = curl_init();
     $this->server_url = $server_url;
-    curl_setopt($this->ch,CURLOPT_URL,$this->server_url);
+    curl_setopt($this->ch,CURLOPT_URL,$this->server_url . $uri);
     curl_setopt($this->ch,CURLOPT_POST,true);
     curl_setopt($this->ch,CURLOPT_RETURNTRANSFER,true);
     curl_setopt($this->ch,CURLOPT_HTTPHEADER,array('Content-Type: application/json','Accept: application/json'));
@@ -56,11 +62,23 @@ class SzamlahegyApi {
    * @author Péter Képes
    **/
   function sendNewInvoice($invoice, $api_key = API_KEY) {
-    $atmp = array();
-    $atmp['api_key'] = $api_key;
-    $atmp['invoice'] = $invoice;
+    $fields = array();
+    $fields['invoice'] = $invoice;
+    $error_text = "Hiba a számla generálása közben! #" . $invoice->foreign_id . "\n";
+    return $this->call_api($fields, $error_text, $api_key);
+  }
 
-    curl_setopt($this->ch,CURLOPT_POSTFIELDS,json_encode($atmp));
+  function import_products($products, $api_key = API_KEY) {
+    $fields = array();
+    $fields['products'] = $products;
+    $error_text = "Hiba a termékek importálása közben!". "\n";
+    return $this->call_api($fields, $error_text, $api_key);
+  }
+
+  function call_api($fields, $error_text, $api_key = API_KEY) {
+    $fields['api_key'] = $api_key;
+
+    curl_setopt($this->ch,CURLOPT_POSTFIELDS,json_encode($fields));
 
     //execute post
     $result = curl_exec($this->ch);
@@ -70,8 +88,6 @@ class SzamlahegyApi {
     $response['result'] = $result;
     $response['curl_info'] = $info;
     $response['curl_error'] = curl_error($this->ch);
-
-    $error_text = "Hiba a számla generálása közben! #" . $invoice->foreign_id . "\n";
 
     if ($response['result'] === false) {
       $response['error'] = true;
