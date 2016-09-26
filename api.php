@@ -77,14 +77,73 @@ class SzamlahegyApi {
 
   function call_api($fields, $error_text, $api_key = API_KEY) {
     $fields['api_key'] = $api_key;
+    $response = array();
+    $response['error'] = false;
+    $response['error_code'] = null;
+    $json_array = json_encode($fields);
 
-    curl_setopt($this->ch,CURLOPT_POSTFIELDS,json_encode($fields));
+    switch (json_last_error()) {
+      case JSON_ERROR_NONE:
+        break;
+      case JSON_ERROR_DEPTH:
+        $response['error'] = true;
+        $response['error_code'] = 201;
+        $response['error_text'] = $error_text .
+          "json error: " .
+          "Maximum stack depth exceeded" . "\n";
+        break;
+
+      case JSON_ERROR_STATE_MISMATCH:
+        $response['error'] = true;
+        $response['error_code'] = 202;
+        $response['error_text'] = $error_text .
+          "json error: " .
+          "Underflow or the modes mismatch" . "\n";
+        break;
+
+      case JSON_ERROR_CTRL_CHAR:
+        $response['error'] = true;
+        $response['error_code'] = 203;
+        $response['error_text'] = $error_text .
+          "json error: " .
+          "Unexpected control character found" . "\n";
+        break;
+
+      case JSON_ERROR_SYNTAX:
+        $response['error'] = true;
+        $response['error_code'] = 204;
+        $response['error_text'] = $error_text .
+          "json error: " .
+          "Syntax error, malformed JSON" . "\n";
+        break;
+
+      case JSON_ERROR_UTF8:
+        $response['error'] = true;
+        $response['error_code'] = 205;
+        $response['error_text'] = $error_text .
+          "json error: " .
+          "Malformed UTF-8 characters, possibly incorrectly encoded" . "\n";
+        break;
+
+      default:
+        $response['error'] = true;
+        $response['error_code'] = 206;
+        $response['error_text'] = $error_text .
+          "json error: " .
+          "Unknown error" . "\n";
+        break;
+    }
+
+    if ($respons['error'] == true ) {
+      return $response;
+    }
+
+    curl_setopt($this->ch,CURLOPT_POSTFIELDS, $json_array);
 
     //execute post
     $result = curl_exec($this->ch);
     $info = curl_getinfo($this->ch);
 
-    $response = array();
     $response['result'] = $result;
     $response['curl_info'] = $info;
     $response['curl_error'] = curl_error($this->ch);
@@ -112,9 +171,6 @@ class SzamlahegyApi {
           "HTTP response code: " . $response['curl_info']['http_code'] . "\n" .
           $response['result'] . "\n";
       }
-    } else {
-      $response['error'] = false;
-      $response['error_code'] = null;
     }
 
     return $response;
