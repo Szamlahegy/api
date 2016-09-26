@@ -40,3 +40,11 @@ Hibakódok:
 * 102: A szerver nem rögzítette a számlát, hibát adott vissza.
 * 103: A szerver nem rögzítette a számlát mert azz már korábban beküldtük. (foreign_id ellenőrzés)
 * 201-206: JSON konverziós hiba
+
+## Verziószám
+
+Például: V3.0.1
+
+* 3: fő Számlahegy verzió
+* 0: al verzió, a Számlahegyben új funkciók változásakor vagy API változáskor változhat
+* 1: Számlahegy PHP API verzió, az adott (3.0) Számlahegy verzióhoz. Akkor változik, ha ez a PHP API változik
