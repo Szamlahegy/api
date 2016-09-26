@@ -39,3 +39,4 @@ Hibakódok:
 * 101: Hálózati hiba történt, nem elérhető a beállított Számlahegy szerver.
 * 102: A szerver nem rögzítette a számlát, hibát adott vissza.
 * 103: A szerver nem rögzítette a számlát mert azz már korábban beküldtük. (foreign_id ellenőrzés)
+* 201-206: JSON konverziós hiba
