@@ -134,7 +134,7 @@ class SzamlahegyApi {
         break;
     }
 
-    if ($respons['error'] == true ) {
+    if ($response['error'] == true ) {
       return $response;
     }
 
