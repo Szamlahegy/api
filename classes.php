@@ -28,7 +28,8 @@ class Invoice {
   public $signed;                     // Elektronikus aláírás? Y/N
   public $customer_contact_name;      // Vevő kapcsolattartó neve, e-mail címzéshez
   public $invoice_rows_attributes;    // A számla sorai (array). Nem lehet üres, minimum 1 sor kell!
-  public $currency;                   // Pénznem
+  public $currency;                   // Pénznem (HUF|EUR|USD)
+  public $language;                   // Számla nyelve (HU|EN|DE|FR)
 }
 
 class InvoiceRow {
